@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Página de Dibujo</title>
+<style>
+    body {
+        text-align: center;
+        background: #f2f2f2;
+        font-family: Arial, sans-serif;
+    }
+
+    #canvas {
+        border: 2px solid #333;
+        background: white;
+        margin-top: 20px;
+        cursor: crosshair;
+    }
+
+    .toolbar {
+        margin-top: 20px;
+    }
+
+    input[type=color], input[type=range] {
+        margin: 0 10px;
+    }
+
+    button {
+        padding: 8px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+</style>
+</head>
+<body>
+
+<h2>🎨 Página de Dibujo</h2>
+
+<div class="toolbar">
+    Color: <input type="color" id="color" value="#000000">
+    Tamaño: <input type="range" id="grosor" min="1" max="40" value="5">
+    <button onclick="limpiarCanvas()">Limpiar</button>
+</div>
+
+<canvas id="canvas" width="800" height="500"></canvas>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    let dibujando = false;
+    let color = document.getElementById("color");
+    let grosor = document.getElementById("grosor");
+
+    canvas.addEventListener("mousedown", () => dibujando = true);
+    canvas.addEventListener("mouseup", () => dibujando = false);
+    canvas.addEventListener("mousemove", dibujar);
+
+    function dibujar(event) {
+        if (!dibujando) return;
+
+        ctx.fillStyle = color.value;
+        ctx.strokeStyle = color.value;
+        ctx.lineWidth = grosor.value;
+        ctx.lineCap = "round";
+
+        let x = event.offsetX;
+        let y = event.offsetY;
+
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    }
+
+    function limpiarCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+    }
+</script>
+
+</body>
+</html>
+ 
